@@ -22,3 +22,5 @@ fun naiveRound(
     exact: List<BigDecimal>,
     scale: Int,
 ): List<BigDecimal> = exact.map { it.setScale(scale, ROUNDING) }
+
+fun overdraftFee(currency: Currency): Money = Money.of("25", currency)

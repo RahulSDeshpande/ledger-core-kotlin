@@ -180,11 +180,34 @@ class Replay(
     }
 
     private fun endOfDay(n: Day) {
+        feeSweep(n)
         val closing = ledger.accounts.keys.associateWith { ledger.ledger(it, n) }
         closings[n] = closing
         days += DayReport(n, ledger.accounts.values.map { accountDay(it, n) })
         if (n.n == 6) {
             for (a in ledger.activeAuths()) authLine(ledger.transition(a.id, AuthState.EXPIRED))
+        }
+    }
+
+    // Ascending so a fee value-dated D2 is already in ledger(D4) when D4 is evaluated: that is the cascade.
+    // "Once per day" is read from the journal itself: a FEE entry value-dated D means D is done.
+    private fun feeSweep(upTo: Day) {
+        for (a in ledger.accounts.values) {
+            for (d in 1..upTo.n) {
+                val day = Day(d)
+                val assessed = ledger.journal.any { it.accountId == a.id && it.kind == EntryKind.FEE && it.valueDate == day }
+                if (assessed || !ledger.ledger(a.id, day).isNegative()) continue
+                ledger.post(
+                    accountId = a.id,
+                    kind = EntryKind.FEE,
+                    amount = -overdraftFee(a.currency),
+                    valueDate = day,
+                    bookedDay = upTo,
+                    processedDay = upTo,
+                    ref = "FEE-$day",
+                    memo = "overdraft $day",
+                )
+            }
         }
     }
 
