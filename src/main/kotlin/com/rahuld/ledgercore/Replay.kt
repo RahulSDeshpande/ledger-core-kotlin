@@ -25,6 +25,12 @@ class DayReport(
     val accounts: List<AccountDay>,
 )
 
+class FinalReport(
+    val interest: Map<String, InterestSchedule>,
+    val capitalized: Map<String, Entry>,
+    val finalBalances: Map<String, Money>,
+)
+
 class Replay(
     val ledger: Ledger,
     private val events: List<Event>,
@@ -34,11 +40,14 @@ class Replay(
 
     // Closing as printed at each EOD. Report/test record only; no balance query reads it.
     val closings = LinkedHashMap<Day, Map<String, Money>>()
+    val interest: Map<String, InterestSchedule> = ledger.accounts.mapValues { InterestSchedule(it.value.currency) }
 
     private val authLines = ArrayList<Pair<Day, AuthLine>>()
     private val flags = ArrayList<Pair<Day, Flag>>()
 
     val days = ArrayList<DayReport>()
+    lateinit var final: FinalReport
+        private set
 
     fun run(): Replay {
         for (a in ledger.accounts.values) {
@@ -183,9 +192,30 @@ class Replay(
         feeSweep(n)
         val closing = ledger.accounts.keys.associateWith { ledger.ledger(it, n) }
         closings[n] = closing
+        for ((id, bal) in closing) interest.getValue(id).accrue(n, bal)
         days += DayReport(n, ledger.accounts.values.map { accountDay(it, n) })
         if (n.n == 6) {
+            val capitalized =
+                ledger.accounts.values.associate { a ->
+                    a.id to
+                        ledger.post(
+                            accountId = a.id,
+                            kind = EntryKind.INTEREST,
+                            amount = interest.getValue(a.id).total(),
+                            valueDate = n,
+                            bookedDay = n,
+                            processedDay = n,
+                            ref = "INTEREST",
+                            memo = "capitalized interest",
+                        )
+                }
             for (a in ledger.activeAuths()) authLine(ledger.transition(a.id, AuthState.EXPIRED))
+            final =
+                FinalReport(
+                    interest = interest,
+                    capitalized = capitalized,
+                    finalBalances = ledger.accounts.keys.associateWith { ledger.ledger(it, n) },
+                )
         }
     }
 
