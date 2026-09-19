@@ -21,3 +21,13 @@ tasks.test {
     testLogging { events("passed", "failed") }
 }
 
+// Green check: same suite minus the test that fails by design (see README).
+tasks.register<Test>("testCi") {
+    testClassesDirs =
+        sourceSets.test
+            .get()
+            .output.classesDirs
+    classpath = sourceSets.test.get().runtimeClasspath
+    useJUnitPlatform { excludeTags("by-design") }
+    testLogging { events("passed", "failed") }
+}
