@@ -11,6 +11,10 @@ In-memory account ledger. Plain Kotlin/JVM, Gradle, JUnit 5. No framework, no pe
 ./gradlew ktlintCheck   # formatting gate: ktlint 1.5.0, ktlint_official style
 ```
 
+## Design
+
+`Ledger` holds one growing `List<Entry>` and a map of authorizations. `ledger(account, day)` and `available(account, day)` fold the journal on every call; nothing is cached. `Replay` walks events in stream order, opens the next day when an event's booked day is later than the open day, and runs end-of-day for each day it skips: fee sweep over every unassessed day in ascending order, interest accrual on the balance as known, record the day, and on Day 6 capitalize interest and expire holds. Back-dated and late events post normally; the `restated` line shows what they changed. `Report` only formats what `Replay` recorded.
+
 ## Reading the output
 
 ```
@@ -36,9 +40,5 @@ The interest block lists, per account, each day's exact accrual, the cumulativel
 ## The failing test
 
 `FailingByDesignTest` asserts that reversing E7 restores the fee position from before E7. It fails: the three 25.00 fees were correct when assessed and the journal is append-only, so the customer stays 75.00 short after E9. The model has no fee-reversal event. The test is the evidence for that gap. It carries `@Tag("by-design")`; `test` runs it, `testCi` skips it.
-
-## Design
-
-`Ledger` holds one growing `List<Entry>` and a map of authorizations. `ledger(account, day)` and `available(account, day)` fold the journal on every call; nothing is cached. `Replay` walks events in stream order, opens the next day when an event's booked day is later than the open day, and runs end-of-day for each day it skips: fee sweep over every unassessed day in ascending order, interest accrual on the balance as known, record the day, and on Day 6 capitalize interest and expire holds. Back-dated and late events post normally; the `restated` line shows what they changed. `Report` only formats what `Replay` recorded.
 
 Built with Claude Code as pair. Every decision in AMBIGUITIES.md and REJECTED.md is reviewed and owned by the candidate.

@@ -14,3 +14,5 @@
 [2026-09-19T21:31:51Z] git / repo initialised, remote github.com:RahulSDeshpande/ledger-core-kotlin; 12 commits in PRD section 12 order, each compiled before commit, intermediate file states sliced from the finished code so history follows the plan not the wall clock; docs commit deferred, md files untracked; no attribution trailers. Code was written on the 18th (entries above), commits are dated today / next: docs commit, push, Part 2
 [2026-09-19T21:47:50Z] README / AI-disclosure line reworded to "reviewed and owned by the candidate": ambiguities 17-25 and abandoned approaches 1-5 originated in the AI defect and simplification passes and were approved, not authored / next: docs commit, push
 [2026-09-19T21:50:48Z] docs commit / README, NUMBERS, AMBIGUITIES (25), REJECTED, WORKLOG committed as one docs commit; push to origin main follows / next: Part 2 PDF, defense prep
+[2026-09-19T21:51:00Z] pushed / origin main = 13 commits, tracking set / next: Part 2 PDF, defense prep
+[2026-09-19T21:51:40Z] README / Design section moved above Reading the output: run first, model second, then how to read the lines / next: Part 2, defense prep
