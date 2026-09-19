@@ -1,0 +1,9 @@
+root = true
+
+[*.{kt,kts}]
+indent_size = 4
+max_line_length = 140
+ktlint_code_style = ktlint_official
+
+[*.{kt,kts}]
+# Project rule, not enforced by ktlint: a call with more than two arguments puts each argument on its own line, named where Kotlin allows.
