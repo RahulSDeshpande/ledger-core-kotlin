@@ -1,6 +1,6 @@
 # ledger-core
 
-In-memory account ledger. Plain Kotlin/JVM, Gradle, JUnit 5. No framework, no persistence.
+In-memory account ledger. Plain Kotlin/JVM, Gradle, JUnit 5. No framework, no persistence. Needs a JDK 17 or newer on PATH; the wrapper fetches Gradle 8.14.
 
 ## Run
 
