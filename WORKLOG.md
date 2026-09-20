@@ -18,3 +18,4 @@
 [2026-09-19T21:51:40Z] README / Design section moved above Reading the output: run first, model second, then how to read the lines / next: Part 2, defense prep
 [2026-09-20T01:28:24Z] Part 2 / architecture document drafted in four versions, v4 submitted (3 pages, bullets, first person); repo URL and PDF submitted / next: defense prep, sections 1 and 2 of the PDF need a second read
 [2026-09-20T01:31:09Z] pre-submit check / fresh clone from GitHub: public, 15 commits, ktlint green, 17 pass 1 by-design, testCi green, report identical, no slop words; README gains JDK requirement line / next: submit
+[2026-09-20T01:44:38Z] submitted / assessment submitted 2026-09-20 05:42 GST, repo URL + architecture-v4.pdf + feedback note; portal says 5-7 business days / next: defense prep
