@@ -16,3 +16,4 @@
 [2026-09-19T21:50:48Z] docs commit / README, NUMBERS, AMBIGUITIES (25), REJECTED, WORKLOG committed as one docs commit; push to origin main follows / next: Part 2 PDF, defense prep
 [2026-09-19T21:51:00Z] pushed / origin main = 13 commits, tracking set / next: Part 2 PDF, defense prep
 [2026-09-19T21:51:40Z] README / Design section moved above Reading the output: run first, model second, then how to read the lines / next: Part 2, defense prep
+[2026-09-20T01:28:24Z] Part 2 / architecture document drafted in four versions, v4 submitted (3 pages, bullets, first person); repo URL and PDF submitted / next: defense prep, sections 1 and 2 of the PDF need a second read
